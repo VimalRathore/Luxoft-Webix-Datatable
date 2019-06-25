@@ -19,8 +19,8 @@
         .rating {
             text-align: center;
         }
-        .webix_column{
-            background-color: brown;
+        .webix_hcell {
+            width: 119px !important;
         }
     </style>
 </head>
@@ -90,22 +90,10 @@
                 </div>                                                                    
             </form>
       </div>
-      <div class="modal-footer">
-          <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-          <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-      </div>
-  </script>
-    <script type="text/ng-template" id="stackedModal.html">
-      <div class="modal-header">
-          <h3 class="modal-title" id="modal-title-{{name}}">The {{name}} modal!</h3>
-      </div>
-      <div class="modal-body" id="modal-body-{{name}}">
-          Having multiple modals open at once is probably bad UX but it's technically possible.
-      </div>
   </script>
 
-    <div style="width:750px;">
-        <div webix-ui view="datatable" webix-data="records" css:"my_style" autoheight="true" webix-event="onItemClick = getRow(id)" select="row"
+    <div class="container">
+        <div webix-ui view="datatable" webix-data="records" autoheight="true" webix-event="onItemClick = getRow(id)" select="row"
             fillspace="true">
             <div view="column" id="id" sort="int" css="rating">Employee Id</div>
             <div view="column" id="firstName" sort="string">First Name</div>
@@ -115,22 +103,14 @@
             <div view="column" id="city" sort="string">City</div>
             <div view="column" id="country" sort="string">Country</div>
         </div>
-        <!-- <div webix-ui view="datatable"  webix-data="records" autoheight="true" select="row" fillspace="true">
-      <div view="column" id="id" sort="int" css="rating">EmployeeId</div>
-      <div view="column" id="firstName"   sort="string">First Name</div>
-      <div view="column" id="lastName"  sort="string">Last Name</div>
-      <div view="column" id="gender"  sort="string">Gender</div>
-      <div view="column" id="email"  sort="string">Email Id</div>
-      <div view="column" id="city"  sort="string">City</div>
-      <div view="column" id="country"  sort="string">Country</div>
-    </div> -->
+        <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>
+        <br/>
+        <button ng-click="addRecord()">Add Row</button>
+        <button ng-click="deleteRecord()">Delete Row</button>
     </div>
 
     <br/>
-    <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>
-    <br/>
-    <button ng-click="addRecord()">Add Row</button>
-    <button ng-click="deleteRecord()">Delete Row</button>
+
 </body>
 
 </html>

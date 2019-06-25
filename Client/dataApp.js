@@ -9,7 +9,6 @@ app.controller("webixTestController", function ($scope, $http, $uibModal) {
 	$scope.records = [];
 	$scope.rowId = -1;
 	$scope.newEmployee = {};
-	$scope.totalItems = 100;
 	$scope.currentPage = 1;
 	$scope.itemPerPage = 10;
 
@@ -18,7 +17,6 @@ app.controller("webixTestController", function ($scope, $http, $uibModal) {
 	};
 
 	$scope.pageChanged = function () {
-	//	console.log('Page changed to: ' + $scope.currentPage);
 		$scope.pageLoad();
 	};
 	$scope.pageLoad = function () {
@@ -28,7 +26,7 @@ app.controller("webixTestController", function ($scope, $http, $uibModal) {
 			params: { cur: $scope.currentPage, total: $scope.itemPerPage }
 		}).then(
 			function successCallback(response) {
-			//	console.log("Result : " + JSON.stringify(response));
+				//	console.log("Result : " + JSON.stringify(response));
 				$scope.totalItems = response.data.pagination.totalItems;
 				$scope.records = response.data.employees;
 				$scope.currentPage = response.data.pagination.currentPage;
@@ -39,22 +37,17 @@ app.controller("webixTestController", function ($scope, $http, $uibModal) {
 
 	$scope.pageLoad();
 
-	$scope.submitForm = function () {
-	//	console.log(JSON.stringify($scope.newEmployee));
-		$http.post('http://localhost:5100/api/Employee/SaveEmployees', JSON.stringify($scope.newEmployee)).
-			then(
-				$scope.pageLoad()
-			);
-	}
+
 	$scope.getRow = function (item) {
 		$scope.rowId = item;
 	}
 	$scope.deleteRecord = function () {
 		if ($scope.rowId != -1) {
-			alert($scope.rowId);
-			$http.post('http://localhost:5100/api/Employee/DeleteEmployees/'+ $scope.rowId).
+			$http.post('http://localhost:5100/api/Employee/DeleteEmployees/' + $scope.rowId).
 				then(
-					$scope.pageLoad()
+					function successCallback(response) {
+						$scope.pageLoad();
+					},
 				);
 		}
 	}
@@ -66,19 +59,36 @@ app.controller("webixTestController", function ($scope, $http, $uibModal) {
 			ariaLabelledBy: 'modal-title',
 			ariaDescribedBy: 'modal-body',
 			templateUrl: 'myModalContent.html',
-			controller: 'webixTestController',
+			controller: 'webixModalController',
 			size: size,
 			appendTo: parentElem,
 			resolve: {
-
 			}
 		});
 
-		modalInstance.result.then(function (selectedItem) {
-			$ctrl.selected = selectedItem;
+		
+		modalInstance.result.then(function () {
+			$scope.pageLoad();
 		}, function () {
-			//		$log.info('Modal dismissed at: ' + new Date());
 		});
 	};
+
+
 });
 
+app.controller("webixModalController", function ($scope, $http, $uibModalInstance) {
+
+	$scope.submitForm = function () {
+		//	console.log(JSON.stringify($scope.newEmployee));
+		$http.post('http://localhost:5100/api/Employee/SaveEmployees', JSON.stringify($scope.newEmployee)).
+			then(
+				function successCallback(response) {
+					$uibModalInstance.close();
+				},
+			);
+	}
+
+	$scope.cancel = function () {
+		$uibModalInstance.dismiss('cancel');
+	};
+});
