@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en" ng-app="webixApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Webix - Angular : Grid</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.webix.com/edge/webix.css">
+    <script type="text/javascript" src="https://cdn.webix.com/edge/webix.js"></script>
+    <script type="text/javascript" src="webix.js"></script>
+
+    <script type="text/javascript" src="dataApp.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        .rating {
+            text-align: center;
+            width:500px !important;
+        }
+        .my_style .webix_hcell{
+        background:#009966;
+        color:white;
+        font-weight:bold;
+ 
+    }
+    .my_style .webix_column{
+        font-style:italic;
+        background:#ddFFdd;
+    }
+    .my_style .webix_column > div{
+        border-color:#ddd;
+    }
+    </style>
+</head>
+
+<body ng-controller="webixTestController" class="modal-demo">
+    <script type="text/ng-template" id="myModalContent.html">
+      <div class="modal-header">
+          <h3 class="modal-title" id="modal-title">Add Employee</h3>
+      </div>
+      <div class="modal-body" id="modal-body">
+          <form ng-submit="submitForm()">
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                 </div>
+                 <input class="form-control" type="text" ng-model="newEmployee.firstName" name="firstName" required placeholder="First Name">
+                </div>
+                <div class="form-group input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                     </div>
+                     <input class="form-control" type="text" ng-model="newEmployee.lastName" name="lastName" required placeholder="Last Name">
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                         </div>
+                         <input class="form-control" type="text" ng-model="newEmployee.Age" name="age" required placeholder="Age">
+                        </div>
+                        <div class="form-group input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                             </div>
+                             <input class="form-control" type="text" ng-model="newEmployee.Gender" name="gender" required placeholder="Gender">
+                            </div>
+                            <div class="form-group input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"> <i class="fa fa-location-arrow"></i> </span>
+                                 </div>
+                                 <input class="form-control" type="text" ng-model="newEmployee.City" name="city" required placeholder="City">
+                                </div>
+                                <div class="form-group input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"> <i class="fa fa-location-arrow"></i> </span>
+                                     </div>
+                                     <input class="form-control" type="text" ng-model="newEmployee.city" name="city" required placeholder="City">
+                                    </div>
+                                    <div class="form-group input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-location-arrow"></i> </span>
+                                         </div>
+                                         <input class="form-control" type="text" ng-model="newEmployee.country" name="country" required placeholder="Country">
+                                        </div>
+                <div class="form-group input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                 </div>
+                    <input class="form-control" type="email" ng-model="newEmployee.email" name="Email" required placeholder="Email address">
+                </div> 
+               
+               
+                                                   
+                <div class="form-group">
+                    <button class="btn btn-success" type="submit">
+                        Add Employee</button>
+                        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                </div>                                                                    
+            </form>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+          <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+      </div>
+  </script>
+    <script type="text/ng-template" id="stackedModal.html">
+      <div class="modal-header">
+          <h3 class="modal-title" id="modal-title-{{name}}">The {{name}} modal!</h3>
+      </div>
+      <div class="modal-body" id="modal-body-{{name}}">
+          Having multiple modals open at once is probably bad UX but it's technically possible.
+      </div>
+  </script>
+
+    <div style="width:750px;">
+        <div webix-ui view="datatable" webix-data="records" css:"my_style" autoheight="true" webix-event="onItemClick = getRow(id)" select="row"
+            fillspace="true">
+            <div view="column" id="id" sort="int" css="rating">Employee Id</div>
+            <div view="column" id="firstName" sort="string">First Name</div>
+            <div view="column" id="lastName" sort="string">Last Name</div>
+            <div view="column" id="gender" sort="string">Gender</div>
+            <div view="column" id="email" sort="string">Email Id</div>
+            <div view="column" id="city" sort="string">City</div>
+            <div view="column" id="country" sort="string">Country</div>
+        </div>
+        <!-- <div webix-ui view="datatable"  webix-data="records" autoheight="true" select="row" fillspace="true">
+      <div view="column" id="id" sort="int" css="rating">EmployeeId</div>
+      <div view="column" id="firstName"   sort="string">First Name</div>
+      <div view="column" id="lastName"  sort="string">Last Name</div>
+      <div view="column" id="gender"  sort="string">Gender</div>
+      <div view="column" id="email"  sort="string">Email Id</div>
+      <div view="column" id="city"  sort="string">City</div>
+      <div view="column" id="country"  sort="string">Country</div>
+    </div> -->
+    </div>
+
+    <br/>
+    <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></ul>
+    <br/>
+    <button ng-click="addRecord()">Add Row</button>
+    <button ng-click="deleteRecord()">Delete Row</button>
+</body>
+
+</html>
